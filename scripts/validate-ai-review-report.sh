@@ -12,6 +12,18 @@ fi
 GATE_COUNT="$(awk '/^AI_REVIEW_GATE: (PASS|FAIL)$/ { count++ } END { print count + 0 }' "$REPORT_FILE")"
 FINAL_NON_EMPTY_LINE="$(awk 'NF { line = $0 } END { print line }' "$REPORT_FILE")"
 
+for required_heading in \
+    '^# Automated AI Code Review Report$' \
+    '^## .*Review [Ss]cope' \
+    '^## .*Severity-[Rr]anked [Ff]indings' \
+    '^## .*Gate [Dd]ecision' \
+    '^## .*Limitations'; do
+    if ! grep -Eq "$required_heading" "$REPORT_FILE"; then
+        echo "AI review report is missing a required section." >&2
+        exit 1
+    fi
+done
+
 if [[ "$GATE_COUNT" -ne 1 ]]; then
     echo "AI review report must contain exactly one gate decision." >&2
     exit 1
@@ -24,5 +36,11 @@ fi
 
 if [[ "$FINAL_NON_EMPTY_LINE" != "AI_REVIEW_GATE: PASS" ]]; then
     echo "AI review gate decision must be the final non-empty report line." >&2
+    exit 1
+fi
+
+if grep -Eq '\|[[:space:]]*(Critical|High)[[:space:]]*\|' "$REPORT_FILE" \
+        || grep -Eq '^###[[:space:]]+(Critical|High)([[:space:]]|—|-)' "$REPORT_FILE"; then
+    echo "AI review report declares Critical or High findings but ends with PASS." >&2
     exit 1
 fi

@@ -12,7 +12,7 @@
 | 2026-11-02 | Java 11.0.24 | Manual QA matrix execution | PASS: all scheduled manual checks matched expected results |
 | 2026-11-02 | Java 11.0.24 | OWASP Dependency-Check retry | INCONCLUSIVE: no report after bounded wait; stopped safely |
 | 2026-11-02 | Java 11.0.24 | CAP-007 `./mvnw -q clean verify` | PASS: 13 tests, 0 failures/errors/skips |
-| 2026-11-02 | Bash | AI gate validator scenarios | PASS: complete PASS accepted; FAIL, incomplete, missing, duplicate, trailing, conflicting and Critical/High-with-PASS reports rejected |
+| 2026-11-02 | Bash/Python | Structured AI gate scenarios | PASS: empty-finding report accepted; open-High report and malformed JSON rejected |
 
 See `evidence/manual-qa-results.md` for the HTTP execution record and `evidence/security-commands.md` for the
 exact dependency-gate limitation and safe rerun command.

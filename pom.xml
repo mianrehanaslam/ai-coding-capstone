@@ -83,6 +83,20 @@
                         <version>3.5.0</version>
                         <executions>
                             <execution>
+                                <id>test-ai-review-gate</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>${skipAiReview}</skip>
+                                    <executable>bash</executable>
+                                    <arguments>
+                                        <argument>${project.basedir}/scripts/test-ai-review-gate.sh</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
                                 <id>generate-ai-code-review</id>
                                 <phase>verify</phase>
                                 <goals>

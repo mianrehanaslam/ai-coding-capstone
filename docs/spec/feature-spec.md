@@ -13,6 +13,7 @@ secure and test-driven feature delivery workflow.
 
 - Create a task with a required title and optional description.
 - List tasks and read one task by identifier.
+- Optionally filter the task list by `TODO`, `IN_PROGRESS` or `DONE` status.
 - Change a task status to `TODO`, `IN_PROGRESS` or `DONE`.
 - Require authentication for every task endpoint.
 - Validate input and return safe HTTP errors.
@@ -27,7 +28,7 @@ and audit history.
 | Method | Path | Success |
 |---|---|---|
 | POST | `/api/v1/tasks` | 201 with task and `Location` header |
-| GET | `/api/v1/tasks` | 200 with an array |
+| GET | `/api/v1/tasks?status={status}` | 200 with an array; status is optional |
 | GET | `/api/v1/tasks/{task-id}` | 200 or 404 |
 | PATCH | `/api/v1/tasks/{task-id}/status` | 200 or 404 |
 
@@ -43,6 +44,8 @@ Task fields: `id`, `title`, `description`, `status`, `createdAt`.
 - **AC-06:** Missing or unknown status returns 400 without changing the task.
 - **AC-07:** Unauthenticated access to every task endpoint returns 401.
 - **AC-08:** Runtime credentials are not committed; client errors expose no stack trace or internal detail.
+- **AC-09:** An authenticated list request with a valid status returns only matching tasks; omitting status
+  preserves the complete list, and an unknown status returns a generic 400 response.
 
 ## Non-functional requirements
 

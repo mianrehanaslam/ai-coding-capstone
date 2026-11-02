@@ -10,6 +10,7 @@
 | AC-06 invalid/missing status rejected | CAP-004 | request validation and exception handler | `rejectsUnknownStatus` | QA-N06, N07 |
 | AC-07 authentication required | CAP-001/002/003/004 | `SecurityConfig` | `rejectsUnauthenticatedRequest` | QA-S01, S02 |
 | AC-08 no committed secret/safe errors | CAP-001/005 | environment placeholders, exception handler, error properties | context tests plus security commands | QA-S04, S05 |
+| AC-09 optional status filter | CAP-007 | `TaskController.findAll`, `TaskService.findAll`, `TaskRepository.findByStatus` | `filtersTasksByStatus`, `rejectsUnknownStatusFilter` | QA-P05, QA-N09 |
 
 ## Ticket completion
 
@@ -20,3 +21,4 @@
 | CAP-003 | Implemented | Query and missing-task tests green |
 | CAP-004 | Implemented | Status tests green |
 | CAP-005 | Blocked at external gates | NVD dependency result and human signature outstanding |
+| CAP-007 | Implemented | Status-filter unit and integration tests green |

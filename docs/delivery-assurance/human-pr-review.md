@@ -4,14 +4,19 @@ This file is the required independent human gate. AI-generated content cannot sa
 
 ## Proposed PR
 
-**Title:** CAP-001..005: deliver authenticated task tracking capstone  
-**Scope:** approved spec 1.0  
-**Automated evidence:** 10 tests passing; security and AI review reports attached  
+**Title:** CAP-006..007: automate AI review and filter tasks by status
+
+**Scope:** approved spec 1.0 including AC-09
+
+**Automated evidence:** 13 tests passing; AI gate validator, security and AI review reports attached
+
 **No automatic merge:** required
 
 ## Reviewer checklist
 
-- [ ] Behavior matches AC-01 through AC-08.
+- [ ] Behavior matches AC-01 through AC-09.
+- [ ] Status filtering returns only matching tasks and rejects unknown values safely.
+- [ ] AI review automation fails for FAIL, missing and malformed gate decisions.
 - [ ] Architecture is appropriate for the bounded feature.
 - [ ] Tests demonstrate positive, negative and authentication behavior.
 - [ ] No critical/high security issue remains.

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -31,8 +32,9 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<TaskResponse>> findAll() {
-        return ResponseEntity.ok(taskService.findAll());
+    public ResponseEntity<List<TaskResponse>> findAll(
+            @RequestParam(value = "status", required = false) TaskStatus status) {
+        return ResponseEntity.ok(taskService.findAll(status));
     }
 
     @RequestMapping(value = "/{task-id}", method = RequestMethod.GET)

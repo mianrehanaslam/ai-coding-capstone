@@ -51,12 +51,16 @@ curl -i -u "$CAPSTONE_USERNAME:$CAPSTONE_PASSWORD" \
   http://localhost:8080/api/v1/tasks
 
 curl -i -u "$CAPSTONE_USERNAME:$CAPSTONE_PASSWORD" \
+  'http://localhost:8080/api/v1/tasks?status=TODO'
+
+curl -i -u "$CAPSTONE_USERNAME:$CAPSTONE_PASSWORD" \
   -X PATCH -H 'Content-Type: application/json' \
   -d '{"status":"DONE"}' \
   http://localhost:8080/api/v1/tasks/1/status
 ```
 
-Expected: create returns 201 and `TODO`; list returns the saved task; patch returns 200 and `DONE`.
+Expected: create returns 201 and `TODO`; list returns the saved task; the filtered list returns only matching
+tasks; patch returns 200 and `DONE`.
 The in-memory database is cleared when the application stops.
 
 ## Submission map
@@ -70,6 +74,43 @@ The in-memory database is cleared when the application stops.
 | Human PR review | `docs/delivery-assurance/human-pr-review.md` (reviewer sign-off required) |
 | QA and risks | `docs/delivery-assurance/qa-test-matrix.md`, `docs/delivery-assurance/known-risk-log.md` |
 | End-to-end mapping | `docs/traceability-matrix.md` |
+
+## Generate a fresh AI code-review report
+
+AI review is intentionally opt-in because it requires Codex authentication, network access and AI usage.
+The Maven profile runs tests first and invokes the Codex CLI during the `verify` phase:
+
+```bash
+./mvnw clean verify -Pai-review
+```
+
+The latest generated report is written to:
+
+```text
+target/ai-review/ai-code-review-latest.md
+```
+
+The generated file is ignored by Git. After a human validates the findings, copy the approved evidence into
+`docs/delivery-assurance/ai-code-review.md`. The command reviews the current branch against `main` by default.
+To select another existing local base branch:
+
+```bash
+AI_REVIEW_BASE=develop ./mvnw clean verify -Pai-review
+```
+
+Prerequisites:
+
+- `codex` is available on `PATH`;
+- Codex authentication has already been completed securely;
+- the configured base branch exists locally.
+
+To run the Maven lifecycle without making an AI call even when the profile is present:
+
+```bash
+./mvnw clean verify -Pai-review -DskipAiReview=true
+```
+
+The AI report is an advisory quality gate and does not replace independent human PR approval.
 
 ## Honest gate status
 

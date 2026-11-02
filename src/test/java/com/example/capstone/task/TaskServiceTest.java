@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,5 +61,18 @@ class TaskServiceTest {
         TaskResponse response = taskService.updateStatus(1L, request);
 
         assertThat(response.getStatus()).isEqualTo(TaskStatus.DONE);
+    }
+
+    @Test
+    void filtersTasksByStatus() {
+        Task doneTask = new Task("Completed task", null);
+        doneTask.changeStatus(TaskStatus.DONE);
+        when(taskRepository.findByStatus(TaskStatus.DONE)).thenReturn(Arrays.asList(doneTask));
+
+        List<TaskResponse> responses = taskService.findAll(TaskStatus.DONE);
+
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getTitle()).isEqualTo("Completed task");
+        assertThat(responses.get(0).getStatus()).isEqualTo(TaskStatus.DONE);
     }
 }

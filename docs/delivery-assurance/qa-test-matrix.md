@@ -9,6 +9,7 @@ credentials. Verify both HTTP response and task database state.
 | QA-P02 | Positive | One task | GET `/api/v1/tasks` | 200 array containing task fields | None | Yes |
 | QA-P03 | Positive | One task | GET its id | 200 with exact task | None | Yes |
 | QA-P04 | Positive | TODO task | PATCH status `IN_PROGRESS`, then `DONE` | Each returns 200/new status | Status updated each time | Partial |
+| QA-P05 | Positive | TODO and DONE tasks | GET `/api/v1/tasks?status=DONE` | 200 with only DONE tasks | None | Yes |
 | QA-N01 | Negative | Authenticated | POST blank title | 400 generic validation message | No insert | Yes |
 | QA-N02 | Boundary | Authenticated | POST 100-char title | 201 | One insert | Manual |
 | QA-N03 | Boundary | Authenticated | POST 101-char title | 400 | No insert | Covered by validation; manual API case |
@@ -17,6 +18,7 @@ credentials. Verify both HTTP response and task database state.
 | QA-N06 | Negative | Existing task | PATCH missing status | 400 | Status unchanged | Manual |
 | QA-N07 | Negative | Existing task | PATCH status `INVALID` | 400 generic validation message | Status unchanged | Yes |
 | QA-N08 | Edge | Authenticated | GET id `0` or `-1` | 400 | None | Manual |
+| QA-N09 | Negative | Authenticated | GET `/api/v1/tasks?status=UNKNOWN` | 400 generic validation message | None | Yes |
 | QA-S01 | Security | No credentials | Call every task endpoint | 401 | No change | GET automated; repeat all manually |
 | QA-S02 | Security | Wrong credentials | GET list | 401, no implementation detail | None | Manual |
 | QA-S03 | Security | Authenticated | POST HTML/script text as title | 201 JSON-escaped string; no execution | Stored as plain data | Manual |
@@ -36,4 +38,6 @@ credentials. Verify both HTTP response and task database state.
 
 All cases previously marked manual or partial were executed against a locally running application on
 2026-11-02 and passed. The complete observed HTTP results are recorded in `evidence/manual-qa-results.md`.
-The automated regression suite was rerun in the same handoff and passed all 10 tests.
+The automated regression suite was rerun after CAP-007 and passed all 13 tests. The structured AI gate
+processor accepted an empty-finding PASS report and rejected an open-High report and malformed JSON. These
+processor checks run automatically before report generation in the Maven `ai-review` profile.

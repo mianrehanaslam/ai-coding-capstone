@@ -22,8 +22,11 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskResponse> findAll() {
-        return taskRepository.findAll().stream()
+    public List<TaskResponse> findAll(TaskStatus status) {
+        List<Task> tasks = status == null
+                ? taskRepository.findAll()
+                : taskRepository.findByStatus(status);
+        return tasks.stream()
                 .map(TaskResponse::new)
                 .collect(Collectors.toList());
     }

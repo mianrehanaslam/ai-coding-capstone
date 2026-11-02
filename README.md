@@ -51,12 +51,16 @@ curl -i -u "$CAPSTONE_USERNAME:$CAPSTONE_PASSWORD" \
   http://localhost:8080/api/v1/tasks
 
 curl -i -u "$CAPSTONE_USERNAME:$CAPSTONE_PASSWORD" \
+  'http://localhost:8080/api/v1/tasks?status=TODO'
+
+curl -i -u "$CAPSTONE_USERNAME:$CAPSTONE_PASSWORD" \
   -X PATCH -H 'Content-Type: application/json' \
   -d '{"status":"DONE"}' \
   http://localhost:8080/api/v1/tasks/1/status
 ```
 
-Expected: create returns 201 and `TODO`; list returns the saved task; patch returns 200 and `DONE`.
+Expected: create returns 201 and `TODO`; list returns the saved task; the filtered list returns only matching
+tasks; patch returns 200 and `DONE`.
 The in-memory database is cleared when the application stops.
 
 ## Submission map

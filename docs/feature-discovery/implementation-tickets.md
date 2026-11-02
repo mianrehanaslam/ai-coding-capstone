@@ -28,3 +28,12 @@
 **Depends on:** CAP-001 through CAP-004  
 **Acceptance:** suite passes, AI/security reports contain no open critical/high, reviewer record exists, QA and
 risk matrices are complete.
+
+## CAP-007 - Filter tasks by status
+
+**Depends on:** CAP-003
+
+**Covers:** AC-09
+
+**Acceptance:** authenticated callers can optionally filter the list by a valid task status; an omitted filter
+returns all tasks and an unknown filter returns a safe 400 response.

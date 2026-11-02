@@ -107,4 +107,27 @@ class TaskControllerIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Request validation failed"));
     }
+
+    @Test
+    @WithMockUser
+    void filtersTasksByStatus() throws Exception {
+        taskRepository.save(new Task("Todo task", null));
+        Task doneTask = new Task("Done task", null);
+        doneTask.changeStatus(TaskStatus.DONE);
+        taskRepository.save(doneTask);
+
+        mockMvc.perform(get("/api/v1/tasks").param("status", "DONE"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].title").value("Done task"))
+                .andExpect(jsonPath("$[0].status").value("DONE"));
+    }
+
+    @Test
+    @WithMockUser
+    void rejectsUnknownStatusFilter() throws Exception {
+        mockMvc.perform(get("/api/v1/tasks").param("status", "UNKNOWN"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Request validation failed"));
+    }
 }

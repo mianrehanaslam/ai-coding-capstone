@@ -23,6 +23,10 @@ if ! git -C "$PROJECT_DIR" rev-parse --verify "$BASE_BRANCH" >/dev/null 2>&1; th
 fi
 
 mkdir -p "$(dirname "$REPORT_FILE")"
+REVIEW_PROMPT="$(cat "$PROMPT_FILE")
+
+Configured base branch: $BASE_BRANCH
+Use Git to compare the current HEAD with this base branch before reporting findings."
 
 echo "Running AI code review against base branch '$BASE_BRANCH'..."
 codex exec \
@@ -30,9 +34,7 @@ codex exec \
     --sandbox read-only \
     --ephemeral \
     --output-last-message "$REPORT_FILE" \
-    review \
-    --base "$BASE_BRANCH" \
-    - < "$PROMPT_FILE"
+    "$REVIEW_PROMPT" </dev/null
 
 if [[ ! -s "$REPORT_FILE" ]]; then
     echo "Codex completed without producing a review report." >&2

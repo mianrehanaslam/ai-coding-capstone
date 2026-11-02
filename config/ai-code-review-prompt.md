@@ -20,5 +20,10 @@ Return a complete Markdown report. Start with `# Automated AI Code Review Report
 5. a gate decision of PASS only when no Critical or High finding is open;
 6. a short limitations section explaining that AI review does not replace human PR approval.
 
+End the report with exactly one machine-readable line:
+
+- `AI_REVIEW_GATE: PASS` when no Critical or High finding is open;
+- `AI_REVIEW_GATE: FAIL` when any Critical or High finding is open.
+
 Do not modify any project file. Do not include secrets, environment values or credentials in the report.
 If no actionable finding exists, say so explicitly rather than inventing one.

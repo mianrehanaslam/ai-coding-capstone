@@ -38,4 +38,5 @@ credentials. Verify both HTTP response and task database state.
 
 All cases previously marked manual or partial were executed against a locally running application on
 2026-11-02 and passed. The complete observed HTTP results are recorded in `evidence/manual-qa-results.md`.
-The automated regression suite was rerun in the same handoff and passed all 10 tests.
+The automated regression suite was rerun after CAP-007 and passed all 13 tests. The AI gate validator also
+passed its PASS, FAIL, malformed-report and missing-report scenarios.

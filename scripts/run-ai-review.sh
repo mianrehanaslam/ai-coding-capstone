@@ -41,4 +41,6 @@ if [[ ! -s "$REPORT_FILE" ]]; then
     exit 1
 fi
 
+"$PROJECT_DIR/scripts/validate-ai-review-report.sh" "$REPORT_FILE"
+
 echo "AI code review report generated: $REPORT_FILE"

@@ -71,6 +71,43 @@ The in-memory database is cleared when the application stops.
 | QA and risks | `docs/delivery-assurance/qa-test-matrix.md`, `docs/delivery-assurance/known-risk-log.md` |
 | End-to-end mapping | `docs/traceability-matrix.md` |
 
+## Generate a fresh AI code-review report
+
+AI review is intentionally opt-in because it requires Codex authentication, network access and AI usage.
+The Maven profile runs tests first and invokes the Codex CLI during the `verify` phase:
+
+```bash
+./mvnw clean verify -Pai-review
+```
+
+The latest generated report is written to:
+
+```text
+target/ai-review/ai-code-review-latest.md
+```
+
+The generated file is ignored by Git. After a human validates the findings, copy the approved evidence into
+`docs/delivery-assurance/ai-code-review.md`. The command reviews the current branch against `main` by default.
+To select another existing local base branch:
+
+```bash
+AI_REVIEW_BASE=develop ./mvnw clean verify -Pai-review
+```
+
+Prerequisites:
+
+- `codex` is available on `PATH`;
+- Codex authentication has already been completed securely;
+- the configured base branch exists locally.
+
+To run the Maven lifecycle without making an AI call even when the profile is present:
+
+```bash
+./mvnw clean verify -Pai-review -DskipAiReview=true
+```
+
+The AI report is an advisory quality gate and does not replace independent human PR approval.
+
 ## Honest gate status
 
 Automated implementation, tests, AI review and static secret review are complete. The NVD dependency scan
